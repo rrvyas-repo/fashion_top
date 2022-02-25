@@ -76,6 +76,8 @@ class _HomePageState extends State<HomePage> {
     ProductBloc.setData();
   }
 
+  int? count;
+
   @override
   Widget build(BuildContext context) {
     GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
@@ -128,7 +130,7 @@ class _HomePageState extends State<HomePage> {
                           child: StreamBuilder(
                             stream: streamCountCall[index],
                             builder: (context, AsyncSnapshot<int> snap) {
-                              int? count = snap.data;
+                              count = snap.data;
                               // print(dataIsNotEmpty[index]);
                               // SchoolBloc.setData();
                               // ProductBloc.setData();

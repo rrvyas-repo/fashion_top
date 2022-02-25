@@ -202,7 +202,7 @@ class _ProductListState extends State<ProductList> {
                                                           context,
                                                           'edit',
                                                           productData[index],
-                                                          updateSchool, () {
+                                                          updateProduct, () {
                                                         ProductBloc.setData();
                                                       });
                                                     },

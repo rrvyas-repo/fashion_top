@@ -107,55 +107,99 @@ class _SizeListState extends State<SizeList> {
                                 for (int i = 0;
                                     i < sizeData[index].sizes.length;
                                     i++)
-                                  ListTile(
-                                    title: Text(
-                                        sizeData[index].sizes[i].toString()),
-                                    trailing: IconButton(
-                                      icon: const Icon(Icons.delete),
-                                      onPressed: () {
+                                  Dismissible(
+                                    key: UniqueKey(),
+                                    onDismissed: (direction) {
+                                      db
+                                          .ref('Size')
+                                          .child(sizeData[index].key)
+                                          .child('size')
+                                          .child(i.toString())
+                                          .remove()
+                                          .then((value) {
                                         db
                                             .ref('Size')
                                             .child(sizeData[index].key)
                                             .child('size')
-                                            .child(i.toString())
-                                            .remove()
+                                            .once()
                                             .then((value) {
+                                          List sizes = [];
+
+                                          if (value.snapshot.value != null) {
+                                            List data =
+                                                value.snapshot.value as List;
+
+                                            data.forEach((element) {
+                                              if (element.toString() !=
+                                                  'null') {
+                                                sizes.add(element);
+                                              }
+                                            });
+                                          }
+                                          //print('for mr'+ sizeData.toString());
+                                          setState(() {});
                                           db
                                               .ref('Size')
                                               .child(sizeData[index].key)
                                               .child('size')
-                                              .once()
+                                              .set(sizes)
                                               .then((value) {
-                                            List sizes = [];
-                                            print(value.snapshot.value);
-                                            if (value.snapshot.value != null) {
-                                              List data =
-                                                  value.snapshot.value as List;
-                                              print(data);
-                                              data.forEach((element) {
-                                                if (element.toString() !=
-                                                    'null') {
-                                                  sizes.add(element);
-                                                } else {}
-                                              });
-                                            }
-                                            //print('for mr'+ sizeData.toString());
-                                            setState(() {
-                                              sizeData.forEach((element) {
-                                                print(element);
-                                              });
-                                            });
+                                            getSizes();
+                                          });
+                                        });
+                                      });
+                                    },
+                                    child: ListTile(
+                                      title: Text(
+                                          sizeData[index].sizes[i].toString()),
+                                      trailing: IconButton(
+                                        icon: const Icon(Icons.delete),
+                                        onPressed: () {
+                                          db
+                                              .ref('Size')
+                                              .child(sizeData[index].key)
+                                              .child('size')
+                                              .child(i.toString())
+                                              .remove()
+                                              .then((value) {
                                             db
                                                 .ref('Size')
                                                 .child(sizeData[index].key)
                                                 .child('size')
-                                                .set(sizes)
+                                                .once()
                                                 .then((value) {
-                                              getSizes();
+                                              List sizes = [];
+                                              print(value.snapshot.value);
+                                              if (value.snapshot.value !=
+                                                  null) {
+                                                List data = value.snapshot.value
+                                                    as List;
+                                                print(data);
+                                                data.forEach((element) {
+                                                  if (element.toString() !=
+                                                      'null') {
+                                                    sizes.add(element);
+                                                  } else {}
+                                                });
+                                              }
+                                              //print('for mr'+ sizeData.toString());
+                                              setState(() {
+                                                sizeData.forEach((element) {
+                                                  print(element);
+                                                });
+                                              });
+                                              db
+                                                  .ref('Size')
+                                                  .child(sizeData[index].key)
+                                                  .child('size')
+                                                  .set(sizes)
+                                                  .then((value) {
+                                                getSizes();
+                                              });
                                             });
                                           });
-                                        });
-                                      },
+                                        },
+                                      ),
                                     ),
                                   ),
                               ],

@@ -18,27 +18,25 @@ schoolSimpleDialogs(
   String addEdit,
   SchoolModel data,
   String btn,
-    Function() onRefresh,
+  Function() onRefresh,
 ) {
   return showDialog(
     context: context,
     builder: (context) => SimpleDialog(
+      elevation: 10,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10.0),
-          topRight: Radius.circular(10.0),
-        ),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: const [
           Text(
             addSchoolDetail,
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
-          const Divider(
+          Divider(
             color: Color.fromRGBO(215, 215, 215, 1),
           ),
         ],

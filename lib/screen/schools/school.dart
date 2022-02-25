@@ -84,234 +84,216 @@ class _SchoolListState extends State<SchoolList> {
                 return snapshot.hasData && schoolData.isNotEmpty
                     ? Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: SchoolBloc.totalSchoolBlocSink == 0
-                            ? const Text('data')
-                            : ListView.builder(
-                                itemCount: schoolData.length,
-                                itemBuilder: (context, index) {
-                                  String item = schoolData[index].toString();
-                                  return Dismissible(
-                                    key: UniqueKey(),
-                                    onDismissed: (direction) {
-                                      if (direction ==
-                                          DismissDirection.startToEnd) {}
-                                    },
-                                    confirmDismiss:
-                                        (DismissDirection direction) async {
-                                      Future.value(direction ==
-                                          DismissDirection.startToEnd);
-                                      return await showDialog(
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0)),
-                                          title: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              const Text(deleteSchool),
-                                              const Divider(
-                                                color: Color.fromRGBO(
-                                                    215, 215, 215, 1),
-                                              ),
-                                              Text(
-                                                  schoolData[index].schoolName),
-                                            ],
+                        child: ListView.builder(
+                            itemCount: schoolData.length,
+                            itemBuilder: (context, index) {
+                              //String item = schoolData[index].toString();
+                              return Dismissible(
+                                key: UniqueKey(),
+                                onDismissed: (direction) {
+                                  if (direction ==
+                                      DismissDirection.startToEnd) {}
+                                },
+                                confirmDismiss:
+                                    (DismissDirection direction) async {
+                                  Future.value(
+                                      direction == DismissDirection.startToEnd);
+                                  return await showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0)),
+                                      title: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Text(deleteSchool),
+                                          const Divider(
+                                            color: Color.fromRGBO(
+                                                215, 215, 215, 1),
                                           ),
-                                          content: const Text(
-                                            deleteSchoolDetail,
+                                          Text(schoolData[index].schoolName),
+                                        ],
+                                      ),
+                                      content: const Text(
+                                        deleteSchoolDetail,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      actions: [
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              primary: appFromClr),
+                                          onPressed: () {
+                                            db
+                                                .ref('School')
+                                                .child(schoolData[index].key)
+                                                .remove();
+
+                                            Navigator.pop(context);
+                                            schoolData.removeAt(index);
+                                            setState(() {});
+                                            SchoolBloc.setData();
+                                          },
+                                          child: const Text(
+                                            btnDelete,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold),
                                           ),
-                                          actions: [
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  primary: appFromClr),
-                                              onPressed: () {
-                                                db
-                                                    .ref('School')
-                                                    .child(
-                                                        schoolData[index].key)
-                                                    .remove();
-
-                                                Navigator.pop(context);
-                                                schoolData.removeAt(index);
-                                                setState(() {});
-                                                SchoolBloc.setData();
-                                              },
-                                              child: const Text(
-                                                btnDelete,
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  primary: appFromClr),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text(btnCancel),
-                                            ),
-                                          ],
                                         ),
-                                      );
-                                      // SimpleDialog(
-                                      //   children: [
-                                      //     MaterialButton(onPressed: () => setState(() {
-                                      //       schoolData.removeAt(index);
-                                      //     }),child: const Text('Done'),)
-                                      //   ],
-                                      // ),);
-                                    },
-
-                                    child: GestureDetector(
-                                      child: Card(
-                                        shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10))),
-                                        elevation: 5.0,
-                                        margin: const EdgeInsets.symmetric(
-                                            vertical: 10.0, horizontal: 10.0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(10)),
-                                            color: Colors.grey.shade200,
-                                          ),
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 10, horizontal: 15),
-                                          // height: 100.0,
-
-                                          child: Column(
-                                            // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                schoolData[index].schoolName,
-                                                style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              Text(
-                                                schoolData[index]
-                                                    .schoolContactPerson,
-                                              ),
-                                              Text(
-                                                schoolData[index].schoolContact,
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  ElevatedButton(
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                            primary:
-                                                                appFromClr),
-                                                    // color:appFromClr,
-                                                    onPressed: () {
-                                                      schoolSimpleDialogs(
-                                                          context,
-                                                          'edit',
-                                                          schoolData[index],
-                                                          updateSchool, () {
-                                                        SchoolBloc.setData();
-                                                      });
-                                                    },
-                                                    child: const Text(
-                                                      'Edit',
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            ],
-                                          ),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              primary: appFromClr),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text(btnCancel),
                                         ),
-                                      ),
-                                      onTap: () => showDialog(
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0)),
-                                          title: Text(
-                                              schoolData[index].schoolName),
-                                          content: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              const Divider(
-                                                color: Color.fromRGBO(
-                                                    215, 215, 215, 1),
-                                              ),
-                                              // Text(
-                                              //   schoolData[index].schoolName,
-                                              //   style: TextStyle(
-                                              //       fontWeight: FontWeight.bold),
-                                              // ),
-                                              Text(
-                                                schoolData[index]
-                                                    .schoolContactPerson,
-                                                style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              Text(
-                                                schoolData[index]
-                                                    .schoolContact
-                                                    .toString(),
-                                                style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              Text(
-                                                schoolData[index].schoolAddress,
-                                                style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              Text(
-                                                schoolData[index]
-                                                    .schoolPinCode
-                                                    .toString(),
-                                                style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ],
-                                          ),
-                                          actions: [
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  primary: appFromClr),
-                                              onPressed: () {
-                                                Navigator.pop(
-                                                    context); //press delete
-                                                SchoolBloc.setData();
-                                              },
-                                              child: const Text(
-                                                btnOk,
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                      ],
                                     ),
                                   );
-                                }
+                                  // SimpleDialog(
+                                  //   children: [
+                                  //     MaterialButton(onPressed: () => setState(() {
+                                  //       schoolData.removeAt(index);
+                                  //     }),child: const Text('Done'),)
+                                  //   ],
+                                  // ),);
+                                },
+                                child: GestureDetector(
+                                  child: Card(
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10))),
+                                    elevation: 5.0,
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 10.0, horizontal: 10.0),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(10)),
+                                        color: Colors.grey.shade200,
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10, horizontal: 15),
+                                      // height: 100.0,
 
+                                      child: Column(
+                                        // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            schoolData[index].schoolName,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            schoolData[index]
+                                                .schoolContactPerson,
+                                          ),
+                                          Text(
+                                            schoolData[index].schoolContact,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    primary: appFromClr),
+                                                // color:appFromClr,
+                                                onPressed: () {
+                                                  schoolSimpleDialogs(
+                                                      context,
+                                                      'edit',
+                                                      schoolData[index],
+                                                      updateSchool, () {
+                                                    SchoolBloc.setData();
+                                                  });
+                                                },
+                                                child: const Text(
+                                                  'Edit',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  onTap: () => showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0)),
+                                      title: Text(schoolData[index].schoolName),
+                                      content: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Divider(
+                                            color: Color.fromRGBO(
+                                                215, 215, 215, 1),
+                                          ),
+                                          // Text(
+                                          //   schoolData[index].schoolName,
+                                          //   style: TextStyle(
+                                          //       fontWeight: FontWeight.bold),
+                                          // ),
+                                          Text(
+                                            schoolData[index]
+                                                .schoolContactPerson,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            schoolData[index]
+                                                .schoolContact
+                                                .toString(),
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            schoolData[index].schoolAddress,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            schoolData[index]
+                                                .schoolPinCode
+                                                .toString(),
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                      actions: [
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              primary: appFromClr),
+                                          onPressed: () {
+                                            Navigator.pop(
+                                                context); //press delete
+                                            SchoolBloc.setData();
+                                          },
+                                          child: const Text(
+                                            btnOk,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
+                              );
+                            }),
                       )
                     : const Center(
                         child: Text(
