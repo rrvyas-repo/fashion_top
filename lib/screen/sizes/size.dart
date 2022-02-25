@@ -1,7 +1,6 @@
 import 'package:fashion_top/common/texts.dart';
 import 'package:fashion_top/models/product_model.dart';
 import 'package:fashion_top/models/size_model.dart';
-import 'package:fashion_top/screen/login/login_page_widget.dart';
 import 'package:fashion_top/screen/sizes/size_widgets.dart';
 import 'package:fashion_top/utils/colors.dart';
 import 'package:fashion_top/utils/icons.dart';

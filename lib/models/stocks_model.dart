@@ -1,3 +1,6 @@
+///Update class
+
+
 import 'package:flutter/material.dart';
 
 class StockQuantity {
