@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "859846790875",
+    "project_id": "fashion-top-dfec4",
+    "storage_bucket": "fashion-top-dfec4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:859846790875:android:0d0fe915cec2ec121206fe",
+        "android_client_info": {
+          "package_name": "com.fashiontop.fashion_top"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "859846790875-fu2vgjk5pi5errehbrkqgg7tk369f8cq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfGmVKJOthok74yUxNGRQA_yCUJPh6b3o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "859846790875-fu2vgjk5pi5errehbrkqgg7tk369f8cq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
